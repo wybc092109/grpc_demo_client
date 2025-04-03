@@ -1,0 +1,61 @@
+syntax = "v1"
+
+type (
+	Empty {
+	}
+
+	Page {
+		Size  int64      `json:"size,default=20,range=[0:150]"`
+		Num   int64      `json:"num,default=1"`
+		Sorts []PageSort `json:"sorts,optional"`
+	}
+
+	PageSort {
+		Condition string `json:"condition"`
+		Order     string    `json:"order"`
+	}
+
+	PageResult {
+		Rows  []interface{} `json:"rows"`
+		Total int64         `json:"total"`
+	}
+
+	Any {
+	}
+
+	IDS {
+		IDS []string `json:"ids"`
+	}
+
+	ID {
+		ID string `json:"id"`
+	}
+
+	SEO {
+		Title       string `json:"title,optional" bson:"title"`
+		Keyword     string `json:"keyword,optional" bson:"keyword"`
+		Description string `json:"description,optional" bson:"description"`
+		Path        string `json:"path,optional" bson:"path"`
+		Status      int32    `json:"status,default=1" bson:"status"`
+	}
+
+	Link  {
+		Href string `json:"href,optional" bson:"href"`
+		Name string `json:"name,optional" bson:"name"`
+	}
+
+	SeoContent {
+		Title       string `json:"title,optional" bson:"title"`
+		Keyword     string `json:"keyword,optional" bson:"keyword"`
+		Description string `json:"description,optional" bson:"description"`
+	}
+
+	ModuleConfig {
+		Name       string         `json:"name,optional" bson:"name"`
+		ShowStatus int            `json:"show_status,optional" bson:"show_status"`
+		ShowList   []string       `json:"show_list,optional" bson:"show_list"`
+		Link       Link           `json:"link,optional" bson:"link"`
+		Status     int            `json:"status,optional" bson:"status"`
+		DataConfig map[string]interface{} `json:"data_config" bson:"data_config"`
+	}
+)
