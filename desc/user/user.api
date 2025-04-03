@@ -12,7 +12,7 @@ type (
     }
 )
 
-service server {
+service client {
     @handler index
     post /index (Empty) returns (IndexResp)
 }
