@@ -1,3 +1,12 @@
 Name: client
 Host: 0.0.0.0
-Port: 8888
+Port: 8887
+Timeout: 10000000000000
+
+UserRPC:
+  Etcd:
+    Hosts:
+    - 127.0.0.1:2379
+    Key: user.rpc
+    User: root
+    Pass: "092109"

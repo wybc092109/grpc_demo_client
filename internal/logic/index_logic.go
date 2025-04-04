@@ -5,6 +5,7 @@ import (
 
 	"grpc_demo_client/internal/svc"
 	"grpc_demo_client/internal/types"
+	"grpc_demo_client/user/user"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -24,7 +25,13 @@ func NewIndexLogic(ctx context.Context, svcCtx *svc.ServiceContext) *IndexLogic 
 }
 
 func (l *IndexLogic) Index(req *types.Empty) (resp *types.IndexResp, err error) {
-	// todo: add your logic here and delete this line
-
+	userGrpcResp,err  := l.svcCtx.UserRPC.UserInfo(l.ctx, &user.UserInfoReq{Name: "第一次测试链接"})
+	if err != nil {
+		logx.Errorf("UserInfo err: %v", err)
+		return	
+	}
+	resp = &types.IndexResp{
+		Ping: userGrpcResp.Name,
+	}
 	return
 }
