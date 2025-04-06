@@ -10,3 +10,14 @@ UserRPC:
     Key: user.rpc
     User: root
     Pass: "092109"
+
+RateLimit:
+  Capacity: 300
+  Rate: 3
+
+RedisConfig:
+  Host: 0.0.0.0:6379
+  Pass: 
+  DB: 1
+
+
