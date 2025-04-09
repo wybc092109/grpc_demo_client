@@ -2,8 +2,9 @@
 name: CI/CD Pipeline # 工作流名称
 
 env:
-  REGISTRY: docker.io
-  IMAGE_NAME: ${{ github.repository }}
+  REGISTRY: ccr.ccs.tencentyun.com
+  NAMESPACE: ${{ secrets.TENCENT_NAMESPACE }}
+  IMAGE_NAME: ${{ github.event.repository.name }}
 
 on: # 触发条件
   push:
@@ -19,23 +20,23 @@ jobs: # 定义任务
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 步骤2：登录容器注册中心
-      - name: Log in to ${{ env.REGISTRY }}
+      # 步骤2：登录腾讯云容器镜像服务
+      - name: Log in to Tencent Cloud CCR
         uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+          username: ${{ secrets.TENCENT_CLOUD_USERNAME }}
+          password: ${{ secrets.TENCENT_CLOUD_PASSWORD }}
 
       # 步骤3：设置构建元数据
       - name: Extract metadata
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          images: ${{ env.REGISTRY }}/${{ env.NAMESPACE }}/${{ env.IMAGE_NAME }}
           tags: |
             type=raw,value=latest
-            type=sha
+            type=sha,format=short
 
       # 步骤4：构建并推送镜像（支持缓存）
       - name: Build and push
@@ -48,11 +49,3 @@ jobs: # 定义任务
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-
-      # 步骤5：触发外部部署（如Portainer）
-      - name: Trigger Portainer Webhook
-        if: success()
-        run: |
-          curl -X POST \
-            -H "Content-Type: application/json" \
-            "${{ secrets.PORTAINER_WEBHOOK_URL }}?trigger_force_update=true"
