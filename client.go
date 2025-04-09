@@ -30,6 +30,8 @@ func main() {
 	rateLimit := middleware.NewTokenBucket(c.RateLimit.Rate, c.RateLimit.Capacity)
 	server.Use(rateLimit.Handler)
 
+	// 注册熔断器
+	server.Use(middleware.CircuitBreakerMiddleware(ctx.CircuitBreakers))
 	fmt.Printf("Starting server at %s:%d...\n", c.Host, c.Port)
 	server.Start()
 }

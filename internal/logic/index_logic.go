@@ -25,11 +25,15 @@ func NewIndexLogic(ctx context.Context, svcCtx *svc.ServiceContext) *IndexLogic 
 }
 
 func (l *IndexLogic) Index(req *types.Empty) (resp *types.IndexResp, err error) {
-	userGrpcResp,err  := l.svcCtx.UserRPC.UserInfo(l.ctx, &user.UserInfoReq{Name: "第一次测试链接"})
+	var userGrpcResp *user.UserInfoResp
+
+	// 直接调用RPC服务，熔断保护已经在中间件层实现
+	userGrpcResp, err = l.svcCtx.UserRPC.UserInfo(l.ctx, &user.UserInfoReq{Name: "第一次测试链接"})
 	if err != nil {
 		logx.Errorf("UserInfo err: %v", err)
-		return	
+		return
 	}
+
 	resp = &types.IndexResp{
 		Ping: userGrpcResp.Name,
 	}

@@ -3,6 +3,7 @@ module grpc_demo_client
 go 1.22.5
 
 require (
+	github.com/go-redis/redis/v8 v8.11.5
 	github.com/redis/go-redis/v9 v9.7.1
 	github.com/zeromicro/go-zero v1.8.1
 	google.golang.org/grpc v1.71.1
