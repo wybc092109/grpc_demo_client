@@ -31,14 +31,19 @@ jobs: # 定义任务
           username: 100032858376
           password: 15059775613w
 
-      # 步骤3：设置构建元数据
+      # 步骤3：读取version文件
+      - name: Read version
+        id: version
+        run: echo "VERSION=$(cat version)" >> $GITHUB_OUTPUT
+
+      # 步骤4：设置构建元数据
       - name: Extract metadata
         id: meta
         uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ env.NAMESPACE }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=raw,value=v0.1
+            type=raw,value=${{ steps.version.outputs.VERSION }}
 
       # 步骤4：设置Docker Buildx
       - name: Set up Docker Buildx
