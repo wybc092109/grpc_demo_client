@@ -3,7 +3,6 @@ package middleware
 import (
 	"context"
 	"fmt"
-	"math/rand"
 	"sync"
 	"time"
 
@@ -116,7 +115,7 @@ func (cb *CircuitBreaker) allowRequest() bool {
 	case StateClosed:
 		return true
 	case StateOpen:
-		lt:=time.Since(lastChange)
+		lt := time.Since(lastChange)
 		if lt > cb.halfOpenTimeout {
 			cb.mutex.Lock()
 			defer cb.mutex.Unlock()
