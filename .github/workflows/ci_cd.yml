@@ -40,7 +40,20 @@ jobs: # 定义任务
           tags: |
             type=raw,value=v0.1
 
-      # 步骤4：构建并推送镜像（支持缓存）
+      # 步骤4：设置Docker Buildx
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      # 步骤5：缓存设置
+      - name: Cache Docker layers
+        uses: actions/cache@v3
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+
+      # 步骤6：构建并推送镜像（支持缓存）
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
@@ -49,5 +62,5 @@ jobs: # 定义任务
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=registry,ref=${{ steps.meta.outputs.tags }}
-          cache-to: type=registry,ref=${{ steps.meta.outputs.tags }},mode=max
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
