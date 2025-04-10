@@ -38,8 +38,7 @@ jobs: # 定义任务
         with:
           images: ${{ env.REGISTRY }}/${{ env.NAMESPACE }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=raw,value=latest
-            type=sha,format=short
+            type=raw,value=v0.1
 
       # 步骤4：构建并推送镜像（支持缓存）
       - name: Build and push
