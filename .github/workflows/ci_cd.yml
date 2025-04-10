@@ -3,8 +3,8 @@ name: CI/CD Pipeline # 工作流名称
 
 env:
   REGISTRY: ccr.ccs.tencentyun.com
-  NAMESPACE: wyj_docker
-  # NAMESPACE: ${{ secrets.TENCENT_NAMESPACE }}
+  # NAMESPACE: wyj_docker
+  NAMESPACE: ${{ secrets.TENCENT_NAMESPACE }}
   IMAGE_NAME: ${{ github.event.repository.name }}
 
 on: # 触发条件
@@ -26,10 +26,10 @@ jobs: # 定义任务
         uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
-          # username: ${{ secrets.TENCENT_CLOUD_USERNAME }}
-          # password: ${{ secrets.TENCENT_CLOUD_PASSWORD }}
-          username: 100032858376
-          password: 15059775613w
+          username: ${{ secrets.TENCENT_CLOUD_USERNAME }}
+          password: ${{ secrets.TENCENT_CLOUD_PASSWORD }}
+          # username: 100032858376
+          # password: 15059775613w
 
       # 步骤3：读取version文件
       - name: Read version
