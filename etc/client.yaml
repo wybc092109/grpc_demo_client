@@ -8,8 +8,8 @@ UserRPC:
     Hosts:
     - 127.0.0.1:2379
     Key: user.rpc
-    User: root
-    Pass: "092109"
+    User: 
+    Pass: 
 
 RateLimit:
   Capacity: 300

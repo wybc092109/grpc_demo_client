@@ -25,6 +25,7 @@ func main() {
 	defer server.Stop()
 
 	ctx := svc.NewServiceContext(c)
+	c = ctx.Config
 	handler.RegisterHandlers(server, ctx)
 	// 初始化限流中间件
 	rateLimit := middleware.NewTokenBucket(c.RateLimit.Rate, c.RateLimit.Capacity)
